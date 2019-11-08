@@ -12,7 +12,7 @@ plugins {
     id 'maven-publish'
 }
 // Set library info
-version = "0.0.1"
+version = "0.0.2-SNAPSHOT"
 group = "com.frc4905"
 repositories {
     // Use jcenter for resolving dependencies.

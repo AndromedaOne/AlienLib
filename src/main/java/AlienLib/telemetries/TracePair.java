@@ -1,4 +1,4 @@
-package frc.robot.telemetries;
+package AlienLib.telemetries;
 
 public class TracePair<T> {
   public TracePair(String columnName, T value) {

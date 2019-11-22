@@ -1,4 +1,4 @@
-package frc.robot.telemetries;
+package AlienLib.telemetries;
 
 import java.io.IOException;
 import java.io.OutputStream;

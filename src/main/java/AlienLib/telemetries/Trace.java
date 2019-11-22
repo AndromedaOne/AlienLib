@@ -1,4 +1,4 @@
-package frc.robot.telemetries;
+package AlienLib.telemetries;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -18,7 +18,6 @@ import java.util.Date;
 import java.util.Map;
 import java.util.TreeMap;
 
-import frc.robot.Robot;
 
 // utility to store trace information to a file on the roborio. this class uses the 
 // singleton pattern. on the first call to Trace.getInstance(), the utility will
@@ -71,6 +70,7 @@ public class Trace {
   private static String m_commandTraceFname = "CommandTrace";
   private BufferedWriter m_commandTraceWriter;
   private static int m_dirNumb = 0;
+  private IsRobotEnabled m_isRobotEnabled;
 
   private class TraceEntry {
     private BufferedWriter m_file;
@@ -90,19 +90,20 @@ public class Trace {
     }
   }
 
-  public synchronized static Trace getInstance() {
+  public synchronized static Trace getInstance(IsRobotEnabled isRobotEnabled) {
     if (m_instance == null) {
-      m_instance = new Trace();
+      m_instance = new Trace(isRobotEnabled);
     }
     return (m_instance);
   }
 
-  private Trace() {
+  private Trace(IsRobotEnabled isRobotEnabled) {
     m_traces = new TreeMap<String, TraceEntry>();
     m_startTime = System.currentTimeMillis();
     createNewTraceDir();
     redirectOutput();
     createCommandTraceFile();
+    m_isRobotEnabled = isRobotEnabled;
   }
 
   private void createCommandTraceFile() {
@@ -209,7 +210,7 @@ public class Trace {
   }
 
   @SafeVarargs
-  private synchronized <T> TraceEntry getTraceEntry(String fileName, TracePair<T>... header) {
+  private final synchronized <T> TraceEntry getTraceEntry(String fileName, TracePair<T>... header) {
     TraceEntry traceEntry = null;
     try {
       if (!m_traces.containsKey(fileName)) {
@@ -237,9 +238,9 @@ public class Trace {
   }
 
   @SafeVarargs
-  private <T> void addEntry(TraceEntry traceEntry, TracePair<T>... values) {
+  private final <T> void addEntry(TraceEntry traceEntry, TracePair<T>... values) {
     try {
-      if (!Robot.getInstance().isEnabled()) {
+      if (m_isRobotEnabled.isRobotEnabled()) {
         return;
       }
       if (m_pathOfTraceDir == null) {

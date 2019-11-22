@@ -12,8 +12,13 @@ plugins {
     id 'maven-publish'
     id "edu.wpi.first.GradleRIO" version "2019.3.2"
 }
+
+apply plugin: 'java'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
 // Set library info
-version = "0.0.2-SNAPSHOT"
+version = "0.0.4"
 group = "com.frc4905"
 repositories {
     // Use jcenter for resolving dependencies.

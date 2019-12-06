@@ -70,7 +70,7 @@ public class Trace {
   private static String m_commandTraceFname = "CommandTrace";
   private BufferedWriter m_commandTraceWriter;
   private static int m_dirNumb = 0;
-  private IsRobotEnabled m_isRobotEnabled;
+  private boolean m_isTracingEnabled = false;
 
   private class TraceEntry {
     private BufferedWriter m_file;
@@ -90,20 +90,19 @@ public class Trace {
     }
   }
 
-  public synchronized static Trace getInstance(IsRobotEnabled isRobotEnabled) {
+  public synchronized static Trace getInstance() {
     if (m_instance == null) {
-      m_instance = new Trace(isRobotEnabled);
+      m_instance = new Trace();
     }
     return (m_instance);
   }
 
-  private Trace(IsRobotEnabled isRobotEnabled) {
+  private Trace() {
     m_traces = new TreeMap<String, TraceEntry>();
     m_startTime = System.currentTimeMillis();
     createNewTraceDir();
     redirectOutput();
     createCommandTraceFile();
-    m_isRobotEnabled = isRobotEnabled;
   }
 
   private void createCommandTraceFile() {
@@ -240,7 +239,7 @@ public class Trace {
   @SafeVarargs
   private final <T> void addEntry(TraceEntry traceEntry, TracePair<T>... values) {
     try {
-      if (m_isRobotEnabled.isRobotEnabled()) {
+      if (!m_isTracingEnabled) {
         return;
       }
       if (m_pathOfTraceDir == null) {
@@ -314,6 +313,14 @@ public class Trace {
     } catch (FileNotFoundException E) {
       System.err.println("ERROR: Redirect Failed");
     }
+  }
+
+  public void setTraceEnable(){
+    m_isTracingEnabled = true;
+  }
+
+  public void setTraceDisable(){
+    m_isTracingEnabled = false;
   }
 
   public void matchStarted() {

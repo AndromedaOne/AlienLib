@@ -18,7 +18,6 @@ import java.util.Date;
 import java.util.Map;
 import java.util.TreeMap;
 
-
 // utility to store trace information to a file on the roborio. this class uses the 
 // singleton pattern. on the first call to Trace.getInstance(), the utility will
 // create a trace directory in /home/lvuser/traceLogs/trace<next number>. the utility
@@ -315,11 +314,11 @@ public class Trace {
     }
   }
 
-  public void setTraceEnable(){
+  public void setTraceEnable() {
     m_isTracingEnabled = true;
   }
 
-  public void setTraceDisable(){
+  public void setTraceDisable() {
     m_isTracingEnabled = false;
   }
 

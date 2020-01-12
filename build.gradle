@@ -11,6 +11,7 @@ plugins {
     id 'java-library'
     id 'maven-publish'
     id "edu.wpi.first.GradleRIO" version "2019.3.2"
+    id "com.diffplug.gradle.spotless" version "3.27.0"
 }
 
 apply plugin: 'java'
@@ -57,4 +58,20 @@ dependencies {
 
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'
+}
+
+spotless {
+  format 'misc', {
+    target '**/*.gradle', '**/*.md', '**/.gitignore'
+
+    trimTrailingWhitespace()
+    indentWithSpaces(2) // or spaces. Takes an integer argument if you don't like 4
+    endWithNewline()
+  }
+  java {
+
+    importOrder 'java', 'javax', 'org', 'com', 'com.diffplug', ''	// A sequence of package names
+    removeUnusedImports() // removes any unused imports
+    eclipse().configFile 'frc4905.eclipseformat.xml'	// XML file dumped out by the Eclipse formatter
+  }
 }

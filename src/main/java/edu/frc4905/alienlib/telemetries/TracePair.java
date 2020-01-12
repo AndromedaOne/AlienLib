@@ -1,4 +1,4 @@
-package AlienLib.telemetries;
+package edu.frc4905.alienlib.telemetries;
 
 public class TracePair<T> {
   public TracePair(String columnName, T value) {

@@ -1,4 +1,4 @@
-package AlienLib.telemetries;
+package edu.frc4905.alienlib.telemetries;
 
 import java.io.IOException;
 import java.io.OutputStream;

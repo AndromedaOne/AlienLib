@@ -10,14 +10,22 @@ plugins {
     // Apply the java-library plugin to add support for Java Library
     id 'java-library'
     id 'maven-publish'
+    id "edu.wpi.first.GradleRIO" version "2019.3.2"
+    id "com.diffplug.gradle.spotless" version "3.27.0"
 }
+
+apply plugin: 'java'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
 // Set library info
-version = "0.0.2-SNAPSHOT"
+version = "0.0.4"
 group = "com.frc4905"
 repositories {
     // Use jcenter for resolving dependencies.
     // You can declare any Maven/Ivy/file repository here.
     jcenter()
+    mavenCentral()
 }
 
 
@@ -40,6 +48,8 @@ publishing {
 }
 
 dependencies {
+    compile wpi.deps.wpilib()
+
     // This dependency is exported to consumers, that is to say found on their compile classpath.
     api 'org.apache.commons:commons-math3:3.6.1'
 
@@ -48,4 +58,20 @@ dependencies {
 
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'
+}
+
+spotless {
+  format 'misc', {
+    target '**/*.gradle', '**/*.md', '**/.gitignore'
+
+    trimTrailingWhitespace()
+    indentWithSpaces(2) // or spaces. Takes an integer argument if you don't like 4
+    endWithNewline()
+  }
+  java {
+
+    importOrder 'java', 'javax', 'org', 'com', 'com.diffplug', ''	// A sequence of package names
+    removeUnusedImports() // removes any unused imports
+    eclipse().configFile 'frc4905.eclipseformat.xml'	// XML file dumped out by the Eclipse formatter
+  }
 }
